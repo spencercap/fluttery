@@ -95,7 +95,7 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
     super.initState();
 
     if (widget.showOverlay) {
-//       showOverlay();
+      // showOverlay();
       WidgetsBinding.instance.addPostFrameCallback((_) => showOverlay());
     }
   }
@@ -103,14 +103,14 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
   @override
   void didUpdateWidget(OverlayBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-//     syncWidgetAndOverlay();
+    // syncWidgetAndOverlay();
     WidgetsBinding.instance.addPostFrameCallback((_) => syncWidgetAndOverlay());
   }
 
   @override
   void reassemble() {
     super.reassemble();
-//     syncWidgetAndOverlay();
+    // syncWidgetAndOverlay();
     WidgetsBinding.instance.addPostFrameCallback((_) => syncWidgetAndOverlay());
   }
 
@@ -138,8 +138,14 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
     }
   }
 
-  void addToOverlay(OverlayEntry entry) async {
-    Overlay.of(context).insert(entry);
+  // void addToOverlay(OverlayEntry entry) async {
+  //   Overlay.of(context).insert(entry);
+  // }
+
+  void addToOverlay(OverlayEntry overlayEntry) async { 
+    Overlay.of(context).insert(overlayEntry); 
+    final overlay = Overlay.of(context); 
+    WidgetsBinding.instance.addPostFrameCallback((_) => overlay.insert(overlayEntry)); 
   }
 
   void hideOverlay() {
@@ -158,7 +164,13 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
   }
 
   void buildOverlay() async {
-    overlayEntry?.markNeedsBuild();
+    // overlayEntry?.markNeedsBuild();
+    
+    // solution 1 by @mlg-hub 
+    // await Future.delayed(Duration(milliseconds: 1 )).then((_) => overlayEntry?.markNeedsBuild());
+    
+    // solution 2 by @LorenzHW 
+    WidgetsBinding.instance.addPostFrameCallback((_) => overlayEntry?.markNeedsBuild());
   }
 
   @override
